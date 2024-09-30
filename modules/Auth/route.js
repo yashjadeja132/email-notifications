@@ -1,43 +1,21 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
 
-const config = require("../../config/config");
-var userSchema = require("../Users/model");
-const { sendResetPasswordEmail } = require("../Email/helper");
+const { sendMail } = require("../Email/helper");
 
 const router = express.Router();
 
-router.post("/reset_password_mail", async (req, res) => {
+router.get("/send_welcome_mail/:mail", async (req, res) => {
   try {
-    const email = req.body.mail;
+    const email = req.params.mail;
 
-    const user = await userSchema.findOne({ email });
-
-    if (!user) {
-      return res
-        .status(201)
-        .json({ statusCode: 201, message: "User not exist!" });
-    }
-
-    const token = jwt.sign(
-      {
-        token: "Reset Password",
-        email: email,
-      },
-      config.SECRET_KEY,
-      { expiresIn: "1H" }
-    );
-
-    const link = `http://localhost:3000/reset-password/${token}`;
     const mailOptions = {
-      from: "<noreply@ipportal.com>",
+      from: "<noreply@techfusionforge.com>",
       to: email,
-      subject: "Password Reset Request",
-      text: `Dear User, \n\nYou have requested a password reset for your account. Please click on the following link to reset your password: [${link}]. If you didn't request this, you can safely ignore this email. \n\nBest regards, \ni&p Portal Team`,
-      html: `<p>Dear User,</p><p>You have requested a password reset for your account. Please click on the following link to reset your password: <a href="${link}">Reset Password</a>. If you didn't request this, you can safely ignore this email.</p><p>Best regards,<br>i&p Portal Team</br></p>`,
+      subject: "Welcome to TechFusionForge",
+      html: `<p>Dear User,</p><p>This is a test mail from TechFusionForge. Please click on the following link to join with us: <a href="https://github.com/yashjadeja132/">TechFusionForge</a>.</p><br /><p>Best regards,<br>send_welcome_mail Team</br></p>`,
     };
 
-    sendResetPasswordEmail(mailOptions, async (error) => {
+    sendMail(mailOptions, async (error) => {
       if (error) {
         return res
           .status(201)

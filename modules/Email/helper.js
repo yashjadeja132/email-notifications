@@ -1,13 +1,14 @@
 const nodemailer = require("nodemailer");
+const config = require("../../config/config");
 
-const sendResetPasswordEmail = (mailOptions, callback) => {
+const sendMail = (mailOptions, callback) => {
   let transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 587,
     secure: false,
     auth: {
-      user: "YOUR_MAIL_USER",
-      pass: "YOUR_USER_PASSWORD",
+      user: config.NODE_MAILER_USER,
+      pass: config.NODE_MAILER_PASS,
     },
   });
 
@@ -23,5 +24,5 @@ const sendResetPasswordEmail = (mailOptions, callback) => {
 };
 
 module.exports = {
-  sendResetPasswordEmail,
+  sendMail,
 };

@@ -9,9 +9,10 @@ const config = () => {
     dotenv.config({ path: ".env" });
   }
   return {
-    MONGO_URL: process.env.MONGO_URL,
     PORT: process.env.PORT,
     SECRET_KEY: process.env.SECRET_KEY,
+    NODE_MAILER_USER: process.env.NODE_MAILER_USER,
+    NODE_MAILER_PASS: process.env.NODE_MAILER_PASS,
   };
 };
 
